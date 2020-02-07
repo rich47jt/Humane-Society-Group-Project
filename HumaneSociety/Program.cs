@@ -4,12 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Project_Humane_Society
+namespace HumaneSociety
 {
     class Program
     {
         static void Main(string[] args)
         {
+            PointOfEntry.Run();
         }
     }
 }

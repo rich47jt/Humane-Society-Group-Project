@@ -1,1 +1,0 @@
-# Humane-Society-Group-Project
