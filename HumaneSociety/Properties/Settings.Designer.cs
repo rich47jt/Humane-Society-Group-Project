@@ -33,5 +33,16 @@ namespace HumaneSociety.Properties {
                 return ((string)(this["Humane_SocietyConnectionString"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=LAPTOP-0V52AH7T\\SQLEXPRESS;Initial Catalog=HumaneSociety2;Integrated " +
+            "Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False")]
+        public string HumaneSociety2ConnectionString {
+            get {
+                return ((string)(this["HumaneSociety2ConnectionString"]));
+            }
+        }
     }
 }
