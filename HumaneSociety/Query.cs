@@ -80,7 +80,7 @@ namespace HumaneSociety
             {
                 clientFromDb = db.Clients.Where(c => c.ClientId == clientWithUpdates.ClientId).Single();
             }
-            catch(InvalidOperationException e)
+            catch(InvalidOperationException )
             {
                 Console.WriteLine("No clients have a ClientId that matches the Client passed in.");
                 Console.WriteLine("No update have been made.");
@@ -164,14 +164,51 @@ namespace HumaneSociety
         //// TODO Items: ////
         
         // TODO: Allow any of the CRUD operations to occur here
-        internal static void RunEmployeeQueries(Employee employee, string crudOperation)
-        {
+        internal static void RunEmployeeQueries(Employee employee,string crudOperation )
+        {  
+            Console.WriteLine("please enter your employ info or display info, please use commnads create, update, remove, or read");
+            Console.ReadLine();
+
+            switch (crudOperation)
+            {
+                case "Update":
+                    //update new employee
+                   db.Employees.Where(e => e.Animals == employee.Animals && e.Email == employee.Email && e.EmployeeId == employee.EmployeeId && e.EmployeeNumber == employee.EmployeeNumber && e.FirstName == employee.FirstName && e.LastName == employee.LastName && e.Password == employee.Password && e.UserName == employee.UserName);
+                   db.SubmitChanges();
+                    break;
+                case "Read":
+                    //read
+                    Console.WriteLine(employee.FirstName);
+                    Console.WriteLine(employee.LastName);
+                    Console.WriteLine(employee.Email);
+                    Console.WriteLine(employee.UserName);
+                    Console.WriteLine(employee.EmployeeNumber);
+                    Console.WriteLine(employee.Animals);
+                    break;
+                case "Delete":
+                    //remove employee
+                    db.Employees.DeleteOnSubmit(employee);
+                    db.SubmitChanges();
+                    break;
+                case "Create":
+                    //create
+                    db.Employees.InsertOnSubmit(employee);
+                    db.SubmitChanges();
+                    break;
+                default:
+                    Console.WriteLine("Wrong input please try again");
+                    break;
+
+            }
             throw new NotImplementedException();
         }
 
         // TODO: Animal CRUD Operations
         internal static void AddAnimal(Animal animal)
         {
+            //db.Animals.Where(a => a.Category = animal);
+            //db.Animals.InsertOnSubmit(animal);
+            //db.SubmitChanges();
             throw new NotImplementedException();
         }
 
@@ -187,6 +224,7 @@ namespace HumaneSociety
 
         internal static void RemoveAnimal(Animal animal)
         {
+
             throw new NotImplementedException();
         }
         
@@ -243,5 +281,9 @@ namespace HumaneSociety
         {
             throw new NotImplementedException();
         }
+
+       
+        
+
     }
 }
