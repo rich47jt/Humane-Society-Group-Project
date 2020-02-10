@@ -166,7 +166,7 @@ namespace HumaneSociety
         // TODO: Allow any of the CRUD operations to occur here
         internal static void RunEmployeeQueries(Employee employee,string crudOperation )
         {  
-            Console.WriteLine("please enter your employ info or display info, please use commnads create, update, remove, or read");
+            Console.WriteLine("please enter your employee, please use commnads create, update, remove, or read");
             Console.ReadLine();
 
             switch (crudOperation)
@@ -214,21 +214,32 @@ namespace HumaneSociety
 
         internal static Animal GetAnimalByID(int id)
         {
-            Animal animal = new Animal();
-            db.Animals.Select(a => a.AnimalId == animal.AnimalId);
-            animal.AnimalId = id;
-            return id;
+           var animal = db.Animals.Where(a => a.AnimalId == id).FirstOrDefault();
+            
+            
+            return animal;
 
         }
         internal static void UpdateAnimal(int animalId, Dictionary<int, string> updates)
-        {            
-            throw new NotImplementedException();
+        {
+           
+           
+            foreach( KeyValuePair<int,string> entry in updates)
+            {
+                //updates.Add();
+            }
+            var newanimal = db.Animals.Where(a => a.AnimalId == animalId);
+
+           
+            
         }
 
         internal static void RemoveAnimal(Animal animal)
         {
+            db.Animals.DeleteOnSubmit(animal);
+            db.SubmitChanges();
 
-            throw new NotImplementedException();
+            
         }
         
         // TODO: Animal Multi-Trait Search
