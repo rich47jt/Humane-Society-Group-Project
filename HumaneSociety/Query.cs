@@ -200,23 +200,26 @@ namespace HumaneSociety
                     break;
 
             }
-            throw new NotImplementedException();
+            
         }
 
         // TODO: Animal CRUD Operations
         internal static void AddAnimal(Animal animal)
         {
-            //db.Animals.Where(a => a.Category = animal);
-            //db.Animals.InsertOnSubmit(animal);
-            //db.SubmitChanges();
-            throw new NotImplementedException();
+            db.Animals.Where(a => a.Category == animal.Category && a.Name == animal.Name);
+            db.Animals.InsertOnSubmit(animal);
+            db.SubmitChanges();
+            
         }
 
         internal static Animal GetAnimalByID(int id)
         {
-            throw new NotImplementedException();
-        }
+            Animal animal = new Animal();
+            db.Animals.Select(a => a.AnimalId == animal.AnimalId);
+            animal.AnimalId = id;
+            return id;
 
+        }
         internal static void UpdateAnimal(int animalId, Dictionary<int, string> updates)
         {            
             throw new NotImplementedException();
