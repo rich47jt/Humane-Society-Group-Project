@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace HumaneSociety
 {
     public static class Query
-    {        
+    {
         static HumaneSocietyDataContext db;
 
         static Query()
@@ -17,11 +17,11 @@ namespace HumaneSociety
 
         internal static List<USState> GetStates()
         {
-            List<USState> allStates = db.USStates.ToList();       
+            List<USState> allStates = db.USStates.ToList();
 
             return allStates;
         }
-            
+
         internal static Client GetClient(string userName, string password)
         {
             Client client = db.Clients.Where(c => c.UserName == userName && c.Password == password).Single();
@@ -55,7 +55,7 @@ namespace HumaneSociety
                 newAddress.AddressLine1 = streetAddress;
                 newAddress.City = null;
                 newAddress.USStateId = stateId;
-                newAddress.Zipcode = zipCode;                
+                newAddress.Zipcode = zipCode;
 
                 db.Addresses.InsertOnSubmit(newAddress);
                 db.SubmitChanges();
@@ -80,13 +80,13 @@ namespace HumaneSociety
             {
                 clientFromDb = db.Clients.Where(c => c.ClientId == clientWithUpdates.ClientId).Single();
             }
-            catch(InvalidOperationException )
+            catch (InvalidOperationException)
             {
                 Console.WriteLine("No clients have a ClientId that matches the Client passed in.");
                 Console.WriteLine("No update have been made.");
                 return;
             }
-            
+
             // update clientFromDb information with the values on clientWithUpdates (aside from address)
             clientFromDb.FirstName = clientWithUpdates.FirstName;
             clientFromDb.LastName = clientWithUpdates.LastName;
@@ -100,14 +100,14 @@ namespace HumaneSociety
             // look for existing Address in Db (null will be returned if the address isn't already in the Db
             Address updatedAddress = db.Addresses.Where(a => a.AddressLine1 == clientAddress.AddressLine1 && a.USStateId == clientAddress.USStateId && a.Zipcode == clientAddress.Zipcode).FirstOrDefault();
 
-            // if the address isn't found in the Db, create and insert it
-            if(updatedAddress == null)
+            // if the address isn't fou nd in the Db, create and insert it
+            if (updatedAddress == null)
             {
                 Address newAddress = new Address();
                 newAddress.AddressLine1 = clientAddress.AddressLine1;
                 newAddress.City = null;
                 newAddress.USStateId = clientAddress.USStateId;
-                newAddress.Zipcode = clientAddress.Zipcode;                
+                newAddress.Zipcode = clientAddress.Zipcode;
 
                 db.Addresses.InsertOnSubmit(newAddress);
                 db.SubmitChanges();
@@ -117,11 +117,11 @@ namespace HumaneSociety
 
             // attach AddressId to clientFromDb.AddressId
             clientFromDb.AddressId = updatedAddress.AddressId;
-            
+
             // submit changes
             db.SubmitChanges();
         }
-        
+
         internal static void AddUsernameAndPassword(Employee employee)
         {
             Employee employeeFromDb = db.Employees.Where(e => e.EmployeeId == employee.EmployeeId).FirstOrDefault();
@@ -162,46 +162,35 @@ namespace HumaneSociety
 
 
         //// TODO Items: ////
-        
+
         // TODO: Allow any of the CRUD operations to occur here
-        internal static void RunEmployeeQueries(Employee employee,string crudOperation )
+        internal static void RunEmployeeQueries(Employee employee, string crudOperation)
         {
-             
-             Console.WriteLine("please enter your employee information, please use commnads Create, Update, Remove, or Read to recieve information");
-             crudOperation = Console.ReadLine();
+            var UpdateEmployee = employee;
+            Console.WriteLine("please enter your employee information, please use commnads Create, Update, Remove, or Read to recieve information");
+            crudOperation = Console.ReadLine();
 
             switch (crudOperation)
             {
                 case "Update":
-                    //update new employee
-                    db.Employees.Where(e => e.FirstName == e.FirstName && e.LastName == e.LastName && e.Email == e.Email && e.UserName == e.UserName && e.EmployeeNumber == e.EmployeeNumber);
-          
+                      employee = null;
+                    if (employee == null)
+                    {
+                        UpdateEmployee = db.Employees.Where(e => e.FirstName == e.FirstName && e.LastName == e.LastName && e.Email == e.Email && e.UserName == e.UserName && e.EmployeeNumber == e.EmployeeNumber).FirstOrDefault();
+                        UpdateEmployee = employee;
+                    }
                     break;
                 case "Read":
-                    //read
-                    Console.WriteLine(db.Employees.Where(e => e.FirstName == e.FirstName));
-                    Console.WriteLine (db.Employees.Where(e => e.LastName == e.LastName));
-                    Console.WriteLine(db.Employees.Where(e => e.Email == e.Email));
-                    Console.WriteLine( db.Employees.Where(e => e.UserName == e.UserName));
-                    Console.WriteLine(db.Employees.Where(e => e.EmployeeNumber == e.EmployeeNumber));
-                    Console.Read();
+                    var readEmployee = employee;
+                    readEmployee = db.Employees.Where(e => e.FirstName == e.FirstName && e.LastName == e.LastName && e.Email == e.Email && e.UserName == e.UserName && e.EmployeeNumber == e.EmployeeNumber).FirstOrDefault();
+                    Console.WriteLine(readEmployee);
                     break;
                 case "Delete":
-                    //remove employee
                     db.Employees.DeleteOnSubmit(employee);
                     db.SubmitChanges();
                     break;
                 case "Create":
-                    //create
                     employee = new Employee();
-                    employee.EmployeeNumber = employee.EmployeeNumber;
-                    employee.UserName = employee.UserName;
-                    employee.Password = employee.Password;
-                    employee.Email = employee.Email;
-                    employee.FirstName = employee.FirstName;
-                    employee.LastName = employee.LastName;
-
-
                     db.Employees.InsertOnSubmit(employee);
                     db.SubmitChanges();
                     break;
@@ -212,34 +201,34 @@ namespace HumaneSociety
             }
 
             Console.ReadLine();
-                
-            
-        }
-        
 
- 
+
+        }
+
+
+
         // TODO: Animal CRUD Operations
         internal static void AddAnimal(Animal animal)
         {
-           
+
             db.Animals.InsertOnSubmit(animal);
             db.SubmitChanges();
-            
+
         }
 
 
         internal static Animal GetAnimalByID(int id)
         {
-           var animal = db.Animals.Where(a => a.AnimalId == id).FirstOrDefault();
+            var animal = db.Animals.Where(a => a.AnimalId == id).FirstOrDefault();
             return animal;
 
         }
         internal static void UpdateAnimal(int animalId, Dictionary<int, string> updates)
         {
             db.Animals.Where(a => a.AnimalId == animalId);
-            foreach ( KeyValuePair<int,string> entry in updates)
+            foreach (KeyValuePair<int, string> entry in updates)
             {
-                
+
                 switch (entry.Key)
                 {
                     case 1:
@@ -271,11 +260,11 @@ namespace HumaneSociety
                         break;
                 }
                 Console.ReadLine();
-                
+
             }
-     
-           
-            
+
+
+
         }
 
         internal static void RemoveAnimal(Animal animal)
@@ -283,30 +272,30 @@ namespace HumaneSociety
             db.Animals.DeleteOnSubmit(animal);
             db.SubmitChanges();
 
-            
+
         }
-        
+
         // TODO: Animal Multi-Trait Search
         internal static IQueryable<Animal> SearchForAnimalsByMultipleTraits(Dictionary<int, string> updates) // parameter(s)?
         {
-            
+
 
             throw new NotImplementedException();
 
-            
+
         }
-         
+
         // TODO: Misc Animal Things
         internal static int GetCategoryId(string categoryName)
         {
             throw new NotImplementedException();
         }
-        
+
         internal static Room GetRoom(int animalId)
         {
             throw new NotImplementedException();
         }
-        
+
         internal static int GetDietPlanId(string dietPlanName)
         {
             throw new NotImplementedException();
@@ -316,34 +305,56 @@ namespace HumaneSociety
         internal static void Adopt(Animal animal, Client client)
         {
             var thisanimal = animal;
-            var thisclient = client;
             thisanimal = db.Animals.Where(a => a.Adoptions == a.Adoptions).FirstOrDefault();
+            db.Animals.InsertOnSubmit(thisanimal);
+
+            var thisclient = client;
             thisclient = db.Clients.Where(c => c.Adoptions == c.Adoptions).FirstOrDefault();
-            db.Animals.InsertOnSubmit(animal);
-            db.Clients.InsertOnSubmit(client);
+            db.Clients.InsertOnSubmit(thisclient);
             db.SubmitChanges();
-           
-            
-            
         }
 
         internal static IQueryable<Adoption> GetPendingAdoptions()
         {
+            
+            var getAdoption = db.Adoptions.Select(a => a.ApprovalStatus == a.ApprovalStatus);
+            return getAdoption;
 
-         
+           
 
-
-            throw new NotImplementedException();
         }
 
         internal static void UpdateAdoption(bool isAdopted, Adoption adoption)
         {
-            throw new NotImplementedException();
+            Client clientFromDb = null;
+
+            try
+            {
+                clientFromDb = db.Clients.Where(c => c.ClientId == clientWithUpdates.ClientId).Single();
+            }
+            catch (InvalidOperationException)
+            {
+                Console.WriteLine("No clients have a ClientId that matches the Client passed in.");
+                Console.WriteLine("No update have been made.");
+                return;
+            }
+
+            // update clientFromDb information with the values on clientWithUpdates (aside from address)
+            clientFromDb.FirstName = clientWithUpdates.FirstName;
+            clientFromDb.LastName = clientWithUpdates.LastName;
+            clientFromDb.UserName = clientWithUpdates.UserName;
+            clientFromDb.Password = clientWithUpdates.Password;
+            clientFromDb.Email = clientWithUpdates.Email;
+
         }
 
         internal static void RemoveAdoption(int animalId, int clientId)
         {
-            throw new NotImplementedException();
+           var thisanimal = db.Animals.Where(a => a.AnimalId == animalId ).FirstOrDefault();
+           var thisclient = db.Clients.Where(a => a.ClientId == clientId).FirstOrDefault();
+           db.Animals.DeleteOnSubmit(thisanimal);
+           db.Clients.DeleteOnSubmit(thisclient);
+           db.SubmitChanges();
         }
 
         // TODO: Shots Stuff
