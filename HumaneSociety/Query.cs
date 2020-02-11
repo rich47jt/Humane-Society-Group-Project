@@ -100,7 +100,9 @@ namespace HumaneSociety
             // look for existing Address in Db (null will be returned if the address isn't already in the Db
             Address updatedAddress = db.Addresses.Where(a => a.AddressLine1 == clientAddress.AddressLine1 && a.USStateId == clientAddress.USStateId && a.Zipcode == clientAddress.Zipcode).FirstOrDefault();
 
-            // if the address isn't found in the Db, create and insert it
+
+            
+            // if the address isn't fou nd in the Db, create and insert it
             if (updatedAddress == null)
             {
                 Address newAddress = new Address();
@@ -167,41 +169,32 @@ namespace HumaneSociety
         internal static void RunEmployeeQueries(Employee employee, string crudOperation)
         {
 
+            var UpdateEmployee = employee;
             Console.WriteLine("please enter your employee information, please use commnads Create, Update, Remove, or Read to recieve information");
             crudOperation = Console.ReadLine();
 
             switch (crudOperation)
             {
                 case "Update":
-                    //update new employee
-                    db.Employees.Where(e => e.FirstName == e.FirstName && e.LastName == e.LastName && e.Email == e.Email && e.UserName == e.UserName && e.EmployeeNumber == e.EmployeeNumber);
 
+                      employee = null;
+                    if (employee == null)
+                    {
+                        UpdateEmployee = db.Employees.Where(e => e.FirstName == e.FirstName && e.LastName == e.LastName && e.Email == e.Email && e.UserName == e.UserName && e.EmployeeNumber == e.EmployeeNumber).FirstOrDefault();
+                        UpdateEmployee = employee;
+                    }
                     break;
                 case "Read":
-                    //read
-                    Console.WriteLine(db.Employees.Where(e => e.FirstName == e.FirstName));
-                    Console.WriteLine(db.Employees.Where(e => e.LastName == e.LastName));
-                    Console.WriteLine(db.Employees.Where(e => e.Email == e.Email));
-                    Console.WriteLine(db.Employees.Where(e => e.UserName == e.UserName));
-                    Console.WriteLine(db.Employees.Where(e => e.EmployeeNumber == e.EmployeeNumber));
-                    Console.Read();
+                    var readEmployee = employee;
+                    readEmployee = db.Employees.Where(e => e.FirstName == e.FirstName && e.LastName == e.LastName && e.Email == e.Email && e.UserName == e.UserName && e.EmployeeNumber == e.EmployeeNumber).FirstOrDefault();
+                    Console.WriteLine(readEmployee);
                     break;
                 case "Delete":
-                    //remove employee
                     db.Employees.DeleteOnSubmit(employee);
                     db.SubmitChanges();
                     break;
                 case "Create":
-                    //create
                     employee = new Employee();
-                    employee.EmployeeNumber = employee.EmployeeNumber;
-                    employee.UserName = employee.UserName;
-                    employee.Password = employee.Password;
-                    employee.Email = employee.Email;
-                    employee.FirstName = employee.FirstName;
-                    employee.LastName = employee.LastName;
-
-
                     db.Employees.InsertOnSubmit(employee);
                     db.SubmitChanges();
                     break;
@@ -325,34 +318,47 @@ namespace HumaneSociety
         internal static void Adopt(Animal animal, Client client)
         {
             var thisanimal = animal;
-            var thisclient = client;
             thisanimal = db.Animals.Where(a => a.Adoptions == a.Adoptions).FirstOrDefault();
+            db.Animals.InsertOnSubmit(thisanimal);
+
+            var thisclient = client;
             thisclient = db.Clients.Where(c => c.Adoptions == c.Adoptions).FirstOrDefault();
-            db.Animals.InsertOnSubmit(animal);
-            db.Clients.InsertOnSubmit(client);
+            db.Clients.InsertOnSubmit(thisclient);
             db.SubmitChanges();
-
-
-
         }
 
         internal static IQueryable<Adoption> GetPendingAdoptions()
         {
+            
+            var getAdoption = db.Adoptions.Where(a => a.ApprovalStatus == "pending");
+            return getAdoption;
 
-
-
-
-            throw new NotImplementedException();
         }
 
         internal static void UpdateAdoption(bool isAdopted, Adoption adoption)
-        {
-            throw new NotImplementedException();
+        { 
+           var thisadoption = adoption;
+           if (isAdopted == true)
+           {
+                thisadoption = db.Adoptions.Where(a => a.ApprovalStatus == "true").FirstOrDefault();
+                db.Adoptions.InsertOnSubmit(thisadoption);
+                db.SubmitChanges();
+           }
+           else if(isAdopted == false)
+           {
+                thisadoption = db.Adoptions.Where(a => a.ApprovalStatus == "false").FirstOrDefault();
+                db.Adoptions.InsertOnSubmit(thisadoption);
+                db.SubmitChanges();
+           }
         }
 
         internal static void RemoveAdoption(int animalId, int clientId)
         {
-            throw new NotImplementedException();
+           var thisanimal = db.Animals.Where(a => a.AnimalId == animalId ).FirstOrDefault();
+           var thisclient = db.Clients.Where(a => a.ClientId == clientId).FirstOrDefault();
+           db.Animals.DeleteOnSubmit(thisanimal);
+           db.Clients.DeleteOnSubmit(thisclient);
+           db.SubmitChanges();
         }
 
         // TODO: Shots Stuff
@@ -381,12 +387,6 @@ namespace HumaneSociety
                 }
             
             }
-
-           
-            
-            
-
-
 
             db.SubmitChanges();
           
