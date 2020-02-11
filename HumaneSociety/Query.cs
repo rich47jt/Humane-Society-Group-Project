@@ -176,8 +176,10 @@ namespace HumaneSociety
                       employee = null;
                     if (employee == null)
                     {
-                        UpdateEmployee = db.Employees.Where(e => e.FirstName == e.FirstName && e.LastName == e.LastName && e.Email == e.Email && e.UserName == e.UserName && e.EmployeeNumber == e.EmployeeNumber).FirstOrDefault();
-                        UpdateEmployee = employee;
+                        UpdateEmployee.Email = employee.Email;
+                        UpdateEmployee.FirstName = employee.FirstName;
+                        UpdateEmployee.LastName = employee.LastName;
+                        UpdateEmployee.EmployeeNumber = employee.EmployeeNumber;
                     }
                     break;
                 case "Read":
@@ -311,14 +313,11 @@ namespace HumaneSociety
         // TODO: Adoption CRUD Operations
         internal static void Adopt(Animal animal, Client client)
         {
-            var thisanimal = animal;
-            thisanimal = db.Animals.Where(a => a.Adoptions == a.Adoptions).FirstOrDefault();
-            db.Animals.InsertOnSubmit(thisanimal);
-
-            var thisclient = client;
-            thisclient = db.Clients.Where(c => c.Adoptions == c.Adoptions).FirstOrDefault();
-            db.Clients.InsertOnSubmit(thisclient);
-            db.SubmitChanges();
+         Adoption adoption = new Adoption();
+         var thisAdoption = adoption;
+         thisAdoption = db.Adoptions.Where(a => a.ApprovalStatus == "false" && a.ClientId == client.ClientId && a.AnimalId == animal.AnimalId && a.AdoptionFee == 75 && a.PaymentCollected == false).FirstOrDefault();
+         db.Adoptions.InsertOnSubmit(thisAdoption);
+         db.SubmitChanges();
         }
 
         internal static IQueryable<Adoption> GetPendingAdoptions()
@@ -348,11 +347,10 @@ namespace HumaneSociety
 
         internal static void RemoveAdoption(int animalId, int clientId)
         {
-           var thisanimal = db.Animals.Where(a => a.AnimalId == animalId ).FirstOrDefault();
-           var thisclient = db.Clients.Where(a => a.ClientId == clientId).FirstOrDefault();
-           db.Animals.DeleteOnSubmit(thisanimal);
-           db.Clients.DeleteOnSubmit(thisclient);
-           db.SubmitChanges();
+            var removeThisAdoption = db.Adoptions.Where(a => a.AnimalId == animalId && a.ClientId == clientId).FirstOrDefault();
+            db.Adoptions.DeleteOnSubmit(removeThisAdoption);
+            db.SubmitChanges();
+
         }
 
         // TODO: Shots Stuff
