@@ -138,6 +138,7 @@ namespace HumaneSociety
 
         }
 
+       
         private static string BoolToYesNo(bool? input)
         {
             if (input == true)
