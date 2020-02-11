@@ -280,8 +280,51 @@ namespace HumaneSociety
         // TODO: Animal Multi-Trait Search
         internal static IQueryable<Animal> SearchForAnimalsByMultipleTraits(Dictionary<int, string> updates) // parameter(s)?
         {
-            var 
 
+            //Animal animal = new Animal();
+
+            var results = db.Animals.ToList();
+            
+            foreach (KeyValuePair<int, string> entry in updates) 
+            {
+                switch(entry.Key)
+                {
+                    case 1:
+                        db.Animals.Where(a => a.Category == a.Category).FirstOrDefault();
+                        break;
+                    case 2:
+                        db.Animals.Where(a => a.Name == a.Name).FirstOrDefault();
+                        break;
+                    case 3:
+                        db.Animals.Where(a => a.Age == a.Age).FirstOrDefault();
+                        break;
+                    case 4:
+                        db.Animals.Where(a => a.Demeanor == a.Demeanor).FirstOrDefault();
+                        break;
+                    case 5:
+                        db.Animals.Where(a => a.KidFriendly == a.KidFriendly).FirstOrDefault();
+                        break;
+                    case 6:
+                        db.Animals.Where(a => a.PetFriendly == a.PetFriendly).FirstOrDefault();
+                        break;
+                    case 7:
+                        db.Animals.Where(a => a.Weight == a.Weight).FirstOrDefault();
+                        break;
+                    case 8:
+                        db.Animals.Where(a => a.AnimalId == a.AnimalId).FirstOrDefault();
+                        break;
+                    case 9:
+                        Console.WriteLine("Finished");
+                        break;
+                    default:
+                        Console.WriteLine("please input your choice");
+                        break;
+                }
+                Console.ReadLine();
+
+            }
+            return db.Animals;  
+            
             
         }
 
