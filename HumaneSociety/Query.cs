@@ -324,7 +324,7 @@ namespace HumaneSociety
         internal static IQueryable<Adoption> GetPendingAdoptions()
         {
             
-            var getAdoption = db.Adoptions.Select(a => a.ApprovalStatus == a.ApprovalStatus);
+            var getAdoption = db.Adoptions.Where(a => a.ApprovalStatus == "pending");
             return getAdoption;
 
            
@@ -333,26 +333,7 @@ namespace HumaneSociety
 
         internal static void UpdateAdoption(bool isAdopted, Adoption adoption)
         {
-            Client clientFromDb = null;
-
-            try
-            {
-                clientFromDb = db.Clients.Where(c => c.ClientId == clientWithUpdates.ClientId).Single();
-            }
-            catch (InvalidOperationException)
-            {
-                Console.WriteLine("No clients have a ClientId that matches the Client passed in.");
-                Console.WriteLine("No update have been made.");
-                return;
-            }
-
-            // update clientFromDb information with the values on clientWithUpdates (aside from address)
-            clientFromDb.FirstName = clientWithUpdates.FirstName;
-            clientFromDb.LastName = clientWithUpdates.LastName;
-            clientFromDb.UserName = clientWithUpdates.UserName;
-            clientFromDb.Password = clientWithUpdates.Password;
-            clientFromDb.Email = clientWithUpdates.Email;
-
+           
         }
 
         internal static void RemoveAdoption(int animalId, int clientId)
