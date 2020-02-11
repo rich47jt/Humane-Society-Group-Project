@@ -165,25 +165,26 @@ namespace HumaneSociety
         
         // TODO: Allow any of the CRUD operations to occur here
         internal static void RunEmployeeQueries(Employee employee,string crudOperation )
-        {  
-            Console.WriteLine("please enter your employee, please use commnads create, update, remove, or read");
-            Console.ReadLine();
+        {
+             
+             Console.WriteLine("please enter your employee information, please use commnads Create, Update, Remove, or Read to recieve information");
+             crudOperation = Console.ReadLine();
 
             switch (crudOperation)
             {
                 case "Update":
                     //update new employee
-                   db.Employees.Where(e => e.Animals == employee.Animals && e.Email == employee.Email && e.EmployeeId == employee.EmployeeId && e.EmployeeNumber == employee.EmployeeNumber && e.FirstName == employee.FirstName && e.LastName == employee.LastName && e.Password == employee.Password && e.UserName == employee.UserName);
-                   db.SubmitChanges();
+                    db.Employees.Where(e => e.FirstName == e.FirstName && e.LastName == e.LastName && e.Email == e.Email && e.UserName == e.UserName && e.EmployeeNumber == e.EmployeeNumber);
+          
                     break;
                 case "Read":
                     //read
-                    Console.WriteLine(employee.FirstName);
-                    Console.WriteLine(employee.LastName);
-                    Console.WriteLine(employee.Email);
-                    Console.WriteLine(employee.UserName);
-                    Console.WriteLine(employee.EmployeeNumber);
-                    Console.WriteLine(employee.Animals);
+                    Console.WriteLine(db.Employees.Where(e => e.FirstName == e.FirstName));
+                    Console.WriteLine (db.Employees.Where(e => e.LastName == e.LastName));
+                    Console.WriteLine(db.Employees.Where(e => e.Email == e.Email));
+                    Console.WriteLine( db.Employees.Where(e => e.UserName == e.UserName));
+                    Console.WriteLine(db.Employees.Where(e => e.EmployeeNumber == e.EmployeeNumber));
+                    Console.Read();
                     break;
                 case "Delete":
                     //remove employee
@@ -192,6 +193,15 @@ namespace HumaneSociety
                     break;
                 case "Create":
                     //create
+                    employee = new Employee();
+                    employee.EmployeeNumber = employee.EmployeeNumber;
+                    employee.UserName = employee.UserName;
+                    employee.Password = employee.Password;
+                    employee.Email = employee.Email;
+                    employee.FirstName = employee.FirstName;
+                    employee.LastName = employee.LastName;
+
+
                     db.Employees.InsertOnSubmit(employee);
                     db.SubmitChanges();
                     break;
@@ -200,36 +210,70 @@ namespace HumaneSociety
                     break;
 
             }
+
+            Console.ReadLine();
+                
             
         }
+        
 
+ 
         // TODO: Animal CRUD Operations
         internal static void AddAnimal(Animal animal)
         {
-            db.Animals.Where(a => a.Category == animal.Category && a.Name == animal.Name);
+           
             db.Animals.InsertOnSubmit(animal);
             db.SubmitChanges();
             
         }
 
+
         internal static Animal GetAnimalByID(int id)
         {
            var animal = db.Animals.Where(a => a.AnimalId == id).FirstOrDefault();
-            
-            
             return animal;
 
         }
         internal static void UpdateAnimal(int animalId, Dictionary<int, string> updates)
         {
-           
-           
-            foreach( KeyValuePair<int,string> entry in updates)
+            db.Animals.Where(a => a.AnimalId == animalId);
+            foreach ( KeyValuePair<int,string> entry in updates)
             {
-                //updates.Add();
+                
+                switch (entry.Key)
+                {
+                    case 1:
+                        db.Animals.Where(a => a.Category == a.Category).FirstOrDefault();
+                        break;
+                    case 2:
+                        db.Animals.Where(a => a.Name == a.Name).FirstOrDefault();
+                        break;
+                    case 3:
+                        db.Animals.Where(a => a.Age == a.Age).FirstOrDefault();
+                        break;
+                    case 4:
+                        db.Animals.Where(a => a.Demeanor == a.Demeanor).FirstOrDefault();
+                        break;
+                    case 5:
+                        db.Animals.Where(a => a.KidFriendly == a.KidFriendly).FirstOrDefault();
+                        break;
+                    case 6:
+                        db.Animals.Where(a => a.PetFriendly == a.PetFriendly).FirstOrDefault();
+                        break;
+                    case 7:
+                        db.Animals.Where(a => a.Weight == a.Weight).FirstOrDefault();
+                        break;
+                    case 8:
+                        Console.WriteLine("Finished");
+                        return;
+                    default:
+                        Console.WriteLine("please input your choice");
+                        break;
+                }
+                Console.ReadLine();
+                
             }
-            var newanimal = db.Animals.Where(a => a.AnimalId == animalId);
-
+     
            
             
         }
@@ -245,7 +289,11 @@ namespace HumaneSociety
         // TODO: Animal Multi-Trait Search
         internal static IQueryable<Animal> SearchForAnimalsByMultipleTraits(Dictionary<int, string> updates) // parameter(s)?
         {
+            
+
             throw new NotImplementedException();
+
+            
         }
          
         // TODO: Misc Animal Things
@@ -274,11 +322,24 @@ namespace HumaneSociety
         // TODO: Adoption CRUD Operations
         internal static void Adopt(Animal animal, Client client)
         {
-            throw new NotImplementedException();
+            var thisanimal = animal;
+            var thisclient = client;
+            thisanimal = db.Animals.Where(a => a.Adoptions == a.Adoptions).FirstOrDefault();
+            thisclient = db.Clients.Where(c => c.Adoptions == c.Adoptions).FirstOrDefault();
+            db.Animals.InsertOnSubmit(animal);
+            db.Clients.InsertOnSubmit(client);
+            db.SubmitChanges();
+           
+            
+            
         }
 
         internal static IQueryable<Adoption> GetPendingAdoptions()
         {
+
+         
+
+
             throw new NotImplementedException();
         }
 
