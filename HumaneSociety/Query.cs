@@ -282,11 +282,9 @@ namespace HumaneSociety
         // TODO: Animal Multi-Trait Search
         internal static IQueryable<Animal> SearchForAnimalsByMultipleTraits(Dictionary<int, string> updates) // parameter(s)?
         {
+            var 
 
-
-            throw new NotImplementedException();
-
-
+            
         }
 
         // TODO: Misc Animal Things
@@ -372,30 +370,29 @@ namespace HumaneSociety
 
         internal static void UpdateShot(string shotName, Animal animal)
         {
-            
-            var shotfromdb = db.Shots.Where(s => s.Name == shotName).FirstOrDefault(); //&& animal.AnimalShots == animal.AnimalShots).FirstOrDefault();
-                                                                                       //check to see if animal has gotten shot yet, if not then add it
 
-            
-             db.Shots.Where(s => s.AnimalShots == null);
-            foreach (AnimalShot entry in animal.AnimalShots) 
+            var shotfromdb = db.Shots.Where(s => s.Name == shotName).FirstOrDefault();
+            Shot shot;
+            if (shotfromdb == null)
             {
-                switch (animal.AnimalId) 
-                {
-                   
+                shot = new Shot();
+                shot.Name = shotName;
+                db.Shots.InsertOnSubmit(shot);
+                db.SubmitChanges();
+            }
+            else
+            {
+                shot = shotfromdb;
 
-                        
-                
-                }
-            
+                AnimalShot animalshot = new AnimalShot();
+                animalshot.DateReceived = DateTime.Now;
+                animalshot.AnimalId = animal.AnimalId;
+                animalshot.ShotId = shot.ShotId;
+                db.AnimalShots.InsertOnSubmit(animalshot);
+                db.SubmitChanges();
             }
 
-            db.SubmitChanges();
-          
         }
-
-
-
 
     }
 }
