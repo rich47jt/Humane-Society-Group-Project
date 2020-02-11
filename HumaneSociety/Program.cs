@@ -10,8 +10,8 @@ namespace HumaneSociety
     {
         static void Main(string[] args)
         {
-            Employee employee = new Employee();
-            Query.RunEmployeeQueries(employee,"create");
+            
+            
         }
     }
 }

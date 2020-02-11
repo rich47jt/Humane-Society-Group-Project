@@ -168,34 +168,34 @@ namespace HumaneSociety
         // TODO: Allow any of the CRUD operations to occur here
         internal static void RunEmployeeQueries(Employee employee, string crudOperation)
         {
-
-            var UpdateEmployee = employee;
+            
             Console.WriteLine("please enter your employee information, please use commnads Create, Update, Remove, or Read to recieve information");
             crudOperation = Console.ReadLine();
 
             switch (crudOperation)
             {
                 case "Update":
-
-                      employee = null;
-                    if (employee == null)
-                    {
-                        UpdateEmployee = db.Employees.Where(e => e.FirstName == e.FirstName && e.LastName == e.LastName && e.Email == e.Email && e.UserName == e.UserName && e.EmployeeNumber == e.EmployeeNumber).FirstOrDefault();
-                        UpdateEmployee = employee;
-                    }
+                    var updateEmployee = employee;
+                     updateEmployee = db.Employees.Where(e => e.FirstName == updateEmployee.FirstName && e.LastName == updateEmployee.LastName && e.Email == updateEmployee.Email && e.UserName == updateEmployee.UserName && e.EmployeeNumber == updateEmployee.EmployeeNumber).FirstOrDefault();
+                    db.Employees.InsertOnSubmit(updateEmployee);
+                    db.SubmitChanges();
                     break;
                 case "Read":
                     var readEmployee = employee;
-                    readEmployee = db.Employees.Where(e => e.FirstName == e.FirstName && e.LastName == e.LastName && e.Email == e.Email && e.UserName == e.UserName && e.EmployeeNumber == e.EmployeeNumber).FirstOrDefault();
+                   readEmployee = db.Employees.Where(e => e.FirstName == readEmployee.FirstName && e.LastName == readEmployee.LastName && e.Email == readEmployee.Email && e.UserName == readEmployee.UserName && e.EmployeeNumber == readEmployee.EmployeeNumber).FirstOrDefault();
                     Console.WriteLine(readEmployee);
                     break;
                 case "Delete":
+                    var deletemployee = employee;
+                    deletemployee = db.Employees.Where(e => e.FirstName == deletemployee.FirstName && e.LastName == deletemployee.LastName && e.Email == deletemployee.Email && e.UserName == deletemployee.UserName && e.EmployeeNumber == deletemployee.EmployeeNumber).FirstOrDefault();
                     db.Employees.DeleteOnSubmit(employee);
                     db.SubmitChanges();
                     break;
                 case "Create":
                     employee = new Employee();
-                    db.Employees.InsertOnSubmit(employee);
+                    var newEmployee = employee;
+                    newEmployee = db.Employees.Where(e => e.FirstName == newEmployee.FirstName && e.LastName == newEmployee.LastName && e.Email == newEmployee.Email && e.UserName == newEmployee.UserName && e.EmployeeNumber == newEmployee.EmployeeNumber).FirstOrDefault();
+                    db.Employees.InsertOnSubmit(newEmployee);
                     db.SubmitChanges();
                     break;
                 default:
@@ -275,8 +275,6 @@ namespace HumaneSociety
         {
             db.Animals.DeleteOnSubmit(animal);
             db.SubmitChanges();
-
-
         }
 
         // TODO: Animal Multi-Trait Search
@@ -291,46 +289,33 @@ namespace HumaneSociety
         internal static int GetCategoryId(string categoryName)
         {
             var categoryondb = db.Categories.Where(c => c.Name == categoryName).FirstOrDefault();
-
             return categoryondb.CategoryId;
         }
 
         internal static Room GetRoom(int animalId)
         {
             Room roomfromdb = db.Rooms.Where(r => r.AnimalId == animalId).FirstOrDefault();
-
             return roomfromdb;
         }
 
         internal static int GetDietPlanId(string dietPlanName)
         {
             var dietplanondb = db.DietPlans.Where(d => d.Name == dietPlanName).FirstOrDefault();
-
             return dietplanondb.DietPlanId;
-
-
-
         }
 
         // TODO: Adoption CRUD Operations
         internal static void Adopt(Animal animal, Client client)
         {
-            var thisanimal = animal;
-            thisanimal = db.Animals.Where(a => a.Adoptions == a.Adoptions).FirstOrDefault();
-            db.Animals.InsertOnSubmit(thisanimal);
-
-            var thisclient = client;
-            thisclient = db.Clients.Where(c => c.Adoptions == c.Adoptions).FirstOrDefault();
-            db.Clients.InsertOnSubmit(thisclient);
-            db.SubmitChanges();
+          var thisAdoption = db.Adoptions.Where(a => a.ApprovalStatus == "false" && a.ClientId == client.ClientId && a.AnimalId == animal.AnimalId && a.AdoptionFee == 75 && a.PaymentCollected == false).FirstOrDefault();
+         db.Adoptions.InsertOnSubmit(thisAdoption);
+         db.SubmitChanges();
         }
 
         internal static IQueryable<Adoption> GetPendingAdoptions()
         {
-            
             var getAdoption = db.Adoptions.Where(a => a.ApprovalStatus == "pending");
             return getAdoption;
-
         }
 
         internal static void UpdateAdoption(bool isAdopted, Adoption adoption)
@@ -352,11 +337,10 @@ namespace HumaneSociety
 
         internal static void RemoveAdoption(int animalId, int clientId)
         {
-           var thisanimal = db.Animals.Where(a => a.AnimalId == animalId ).FirstOrDefault();
-           var thisclient = db.Clients.Where(a => a.ClientId == clientId).FirstOrDefault();
-           db.Animals.DeleteOnSubmit(thisanimal);
-           db.Clients.DeleteOnSubmit(thisclient);
-           db.SubmitChanges();
+            var removeThisAdoption = db.Adoptions.Where(a => a.AnimalId == animalId && a.ClientId == clientId).FirstOrDefault();
+            db.Adoptions.DeleteOnSubmit(removeThisAdoption);
+            db.SubmitChanges();
+
         }
 
         // TODO: Shots Stuff
