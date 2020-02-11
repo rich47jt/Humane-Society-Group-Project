@@ -364,8 +364,10 @@ namespace HumaneSociety
         // TODO: Shots Stuff
         internal static IQueryable<AnimalShot> GetShots(Animal animal)
         {
-            var shotfromdb =
-            
+            var getShotsfromdb = db.AnimalShots.Where(a => a.Animal == animal );
+            return getShotsfromdb;
+
+
         }
 
         internal static void UpdateShot(string shotName, Animal animal)
@@ -380,7 +382,7 @@ namespace HumaneSociety
             {
                 switch (animal.AnimalId) 
                 {
-                    case 1:
+                   
 
                         
                 
