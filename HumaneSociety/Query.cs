@@ -100,6 +100,8 @@ namespace HumaneSociety
             // look for existing Address in Db (null will be returned if the address isn't already in the Db
             Address updatedAddress = db.Addresses.Where(a => a.AddressLine1 == clientAddress.AddressLine1 && a.USStateId == clientAddress.USStateId && a.Zipcode == clientAddress.Zipcode).FirstOrDefault();
 
+
+            
             // if the address isn't fou nd in the Db, create and insert it
             if (updatedAddress == null)
             {
@@ -166,6 +168,7 @@ namespace HumaneSociety
         // TODO: Allow any of the CRUD operations to occur here
         internal static void RunEmployeeQueries(Employee employee, string crudOperation)
         {
+
             var UpdateEmployee = employee;
             Console.WriteLine("please enter your employee information, please use commnads Create, Update, Remove, or Read to recieve information");
             crudOperation = Console.ReadLine();
@@ -173,6 +176,7 @@ namespace HumaneSociety
             switch (crudOperation)
             {
                 case "Update":
+
                       employee = null;
                     if (employee == null)
                     {
@@ -290,14 +294,16 @@ namespace HumaneSociety
         // TODO: Misc Animal Things
         internal static int GetCategoryId(string categoryName)
         {
-           var categoryondb = db.Categories.Where(c => c.Name == categoryName).FirstOrDefault();
+            var categoryondb = db.Categories.Where(c => c.Name == categoryName).FirstOrDefault();
 
             return categoryondb.CategoryId;
         }
 
         internal static Room GetRoom(int animalId)
         {
-            throw new NotImplementedException();
+            Room roomfromdb = db.Rooms.Where(r => r.AnimalId == animalId).FirstOrDefault();
+
+            return roomfromdb;
         }
 
         internal static int GetDietPlanId(string dietPlanName)
@@ -306,8 +312,8 @@ namespace HumaneSociety
 
             return dietplanondb.DietPlanId;
 
-           
-            
+
+
         }
 
         // TODO: Adoption CRUD Operations
@@ -356,16 +362,38 @@ namespace HumaneSociety
         // TODO: Shots Stuff
         internal static IQueryable<AnimalShot> GetShots(Animal animal)
         {
-            throw new NotImplementedException();
+            var getShotsfromdb = db.AnimalShots.Where(a => a.Animal == animal );
+            return getShotsfromdb;
+
+
         }
 
         internal static void UpdateShot(string shotName, Animal animal)
         {
-            throw new NotImplementedException();
+            
+            var shotfromdb = db.Shots.Where(s => s.Name == shotName).FirstOrDefault(); //&& animal.AnimalShots == animal.AnimalShots).FirstOrDefault();
+                                                                                       //check to see if animal has gotten shot yet, if not then add it
+
+            
+             db.Shots.Where(s => s.AnimalShots == null);
+            foreach (AnimalShot entry in animal.AnimalShots) 
+            {
+                switch (animal.AnimalId) 
+                {
+                   
+
+                        
+                
+                }
+            
+            }
+
+            db.SubmitChanges();
+          
         }
 
-       
-        
+
+
 
     }
 }
