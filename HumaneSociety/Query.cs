@@ -327,13 +327,23 @@ namespace HumaneSociety
             var getAdoption = db.Adoptions.Where(a => a.ApprovalStatus == "pending");
             return getAdoption;
 
-           
-
         }
 
         internal static void UpdateAdoption(bool isAdopted, Adoption adoption)
-        {
-           
+        { 
+           var thisadoption = adoption;
+           if (isAdopted == true)
+           {
+                thisadoption = db.Adoptions.Where(a => a.ApprovalStatus == "true").FirstOrDefault();
+                db.Adoptions.InsertOnSubmit(thisadoption);
+                db.SubmitChanges();
+           }
+           else if(isAdopted == false)
+           {
+                thisadoption = db.Adoptions.Where(a => a.ApprovalStatus == "false").FirstOrDefault();
+                db.Adoptions.InsertOnSubmit(thisadoption);
+                db.SubmitChanges();
+           }
         }
 
         internal static void RemoveAdoption(int animalId, int clientId)
