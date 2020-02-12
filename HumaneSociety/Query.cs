@@ -172,7 +172,7 @@ namespace HumaneSociety
             switch (crudOperation)
             {
                 case "update":
-                    var updateEmployee = new Employee();
+                    var updateEmployee = employee;
                     updateEmployee = db.Employees.Where(e => e.FirstName == updateEmployee.FirstName && e.LastName == updateEmployee.LastName && e.Email == updateEmployee.Email && e.UserName == updateEmployee.UserName && e.EmployeeNumber == updateEmployee.EmployeeNumber).FirstOrDefault();
                     db.Employees.InsertOnSubmit(updateEmployee);
                     db.SubmitChanges();
@@ -205,7 +205,9 @@ namespace HumaneSociety
         // TODO: Animal CRUD Operations
         internal static void AddAnimal(Animal animal)
         {
-            db.Animals.InsertOnSubmit(animal);
+            var thisanimal = new Animal();
+            thisanimal = db.Animals.Where(a => a.Category == thisanimal.Category && a.CategoryId == thisanimal.CategoryId && a.Age == thisanimal.Age && a.AnimalId == thisanimal.AnimalId && a.Demeanor == thisanimal.Demeanor && a.DietPlanId == thisanimal.DietPlanId && a.KidFriendly == thisanimal.KidFriendly && a.PetFriendly == thisanimal.PetFriendly && a.Weight == thisanimal.Weight && a.AdoptionStatus == thisanimal.AdoptionStatus && a.EmployeeId == thisanimal.EmployeeId && a.Gender == thisanimal.Gender && a.Name == thisanimal.Name).FirstOrDefault();
+            db.Animals.InsertOnSubmit(thisanimal);
             db.SubmitChanges();
         }
 
@@ -260,6 +262,8 @@ namespace HumaneSociety
 
         internal static void RemoveAnimal(Animal animal)
         {
+            var thisanimal = animal;
+            thisanimal =  db.Animals.Where(a => a.Category == thisanimal.Category && a.CategoryId == thisanimal.CategoryId && a.Age == thisanimal.Age && a.AnimalId == thisanimal.AnimalId && a.Demeanor == thisanimal.Demeanor && a.DietPlanId == thisanimal.DietPlanId && a.KidFriendly == thisanimal.KidFriendly && a.PetFriendly == thisanimal.PetFriendly && a.Weight == thisanimal.Weight && a.AdoptionStatus == thisanimal.AdoptionStatus && a.EmployeeId == thisanimal.EmployeeId && a.Gender == thisanimal.Gender && a.Name == thisanimal.Name).FirstOrDefault();
             db.Animals.DeleteOnSubmit(animal);
             db.SubmitChanges();
         }
@@ -268,7 +272,7 @@ namespace HumaneSociety
         internal static IQueryable<Animal> SearchForAnimalsByMultipleTraits(Dictionary<int, string> updates) // parameter(s)?
         {
 
-            //Animal animal = new Animal();
+            
 
             var results = db.Animals.ToList();
             
