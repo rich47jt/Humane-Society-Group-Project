@@ -10,7 +10,7 @@ namespace HumaneSociety
     {
         public override void LogIn()
         {
-            UserInterface.DisplayUserOptions("What is your password?");
+            UserInterface.DisplayUserOptions("What is your passworda?");
             string password = UserInterface.GetUserInput();
             if (password.ToLower() != "poiuyt")
             {

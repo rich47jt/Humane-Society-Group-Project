@@ -169,30 +169,26 @@ namespace HumaneSociety
         internal static void RunEmployeeQueries(Employee employee, string crudOperation)
         {
             
-            Console.WriteLine("please enter your employee information, please use commnads Create, Update, Remove, or Read to recieve information");
-            crudOperation = Console.ReadLine();
-
             switch (crudOperation)
             {
-                case "Update":
-                    var updateEmployee = employee;
-                     updateEmployee = db.Employees.Where(e => e.FirstName == updateEmployee.FirstName && e.LastName == updateEmployee.LastName && e.Email == updateEmployee.Email && e.UserName == updateEmployee.UserName && e.EmployeeNumber == updateEmployee.EmployeeNumber).FirstOrDefault();
+                case "update":
+                    var updateEmployee = new Employee();
+                    updateEmployee = db.Employees.Where(e => e.FirstName == updateEmployee.FirstName && e.LastName == updateEmployee.LastName && e.Email == updateEmployee.Email && e.UserName == updateEmployee.UserName && e.EmployeeNumber == updateEmployee.EmployeeNumber).FirstOrDefault();
                     db.Employees.InsertOnSubmit(updateEmployee);
                     db.SubmitChanges();
                     break;
-                case "Read":
+                case "read":
                     var readEmployee = employee;
                    readEmployee = db.Employees.Where(e => e.FirstName == readEmployee.FirstName && e.LastName == readEmployee.LastName && e.Email == readEmployee.Email && e.UserName == readEmployee.UserName && e.EmployeeNumber == readEmployee.EmployeeNumber).FirstOrDefault();
                     Console.WriteLine(readEmployee);
                     break;
-                case "Delete":
+                case "delete":
                     var deletemployee = employee;
                     deletemployee = db.Employees.Where(e => e.FirstName == deletemployee.FirstName && e.LastName == deletemployee.LastName && e.Email == deletemployee.Email && e.UserName == deletemployee.UserName && e.EmployeeNumber == deletemployee.EmployeeNumber).FirstOrDefault();
                     db.Employees.DeleteOnSubmit(employee);
                     db.SubmitChanges();
                     break;
-                case "Create":
-                    employee = new Employee();
+                case "create":
                     var newEmployee = employee;
                     newEmployee = db.Employees.Where(e => e.FirstName == newEmployee.FirstName && e.LastName == newEmployee.LastName && e.Email == newEmployee.Email && e.UserName == newEmployee.UserName && e.EmployeeNumber == newEmployee.EmployeeNumber).FirstOrDefault();
                     db.Employees.InsertOnSubmit(newEmployee);
@@ -201,25 +197,17 @@ namespace HumaneSociety
                 default:
                     Console.WriteLine("Wrong input please try again");
                     break;
-
             }
 
             Console.ReadLine();
-
-
         }
-
-
 
         // TODO: Animal CRUD Operations
         internal static void AddAnimal(Animal animal)
         {
-
             db.Animals.InsertOnSubmit(animal);
             db.SubmitChanges();
-
         }
-
 
         internal static Animal GetAnimalByID(int id)
         {
@@ -229,32 +217,34 @@ namespace HumaneSociety
         }
         internal static void UpdateAnimal(int animalId, Dictionary<int, string> updates)
         {
-            db.Animals.Where(a => a.AnimalId == animalId);
+            Animal animal = new Animal();
+            var updateanimal = animal;
+            updateanimal = db.Animals.Where(a => a.AnimalId == animalId).FirstOrDefault();
             foreach (KeyValuePair<int, string> entry in updates)
             {
-
+    
                 switch (entry.Key)
                 {
                     case 1:
-                        db.Animals.Where(a => a.Category == a.Category).FirstOrDefault();
+                       updateanimal = db.Animals.Where(a => a.Category == updateanimal.Category).FirstOrDefault();
                         break;
                     case 2:
-                        db.Animals.Where(a => a.Name == a.Name).FirstOrDefault();
+                        updateanimal = db.Animals.Where(a => a.Name == updateanimal.Name).FirstOrDefault();
                         break;
                     case 3:
-                        db.Animals.Where(a => a.Age == a.Age).FirstOrDefault();
+                        updateanimal = db.Animals.Where(a => a.Age == updateanimal.Age).FirstOrDefault();
                         break;
                     case 4:
-                        db.Animals.Where(a => a.Demeanor == a.Demeanor).FirstOrDefault();
+                        updateanimal = db.Animals.Where(a => a.Demeanor == updateanimal.Demeanor).FirstOrDefault();
                         break;
                     case 5:
-                        db.Animals.Where(a => a.KidFriendly == a.KidFriendly).FirstOrDefault();
+                        updateanimal = db.Animals.Where(a => a.KidFriendly == updateanimal.KidFriendly).FirstOrDefault();
                         break;
                     case 6:
-                        db.Animals.Where(a => a.PetFriendly == a.PetFriendly).FirstOrDefault();
+                        updateanimal = db.Animals.Where(a => a.PetFriendly == updateanimal.PetFriendly).FirstOrDefault();
                         break;
                     case 7:
-                        db.Animals.Where(a => a.Weight == a.Weight).FirstOrDefault();
+                        updateanimal = db.Animals.Where(a => a.Weight == updateanimal.Weight).FirstOrDefault();
                         break;
                     case 8:
                         Console.WriteLine("Finished");
@@ -266,9 +256,6 @@ namespace HumaneSociety
                 Console.ReadLine();
 
             }
-
-
-
         }
 
         internal static void RemoveAnimal(Animal animal)
@@ -357,8 +344,7 @@ namespace HumaneSociety
         internal static void UpdateShot(string shotName, Animal animal)
         {
             
-            var shotfromdb = db.Shots.Where(s => s.Name == shotName).FirstOrDefault(); //&& animal.AnimalShots == animal.AnimalShots).FirstOrDefault();
-                                                                                       //check to see if animal has gotten shot yet, if not then add it
+            var shotfromdb = db.Shots.Where(s => s.Name == shotName).FirstOrDefault(); 
 
             
              db.Shots.Where(s => s.AnimalShots == null);
