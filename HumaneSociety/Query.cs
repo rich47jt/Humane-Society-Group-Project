@@ -268,10 +268,51 @@ namespace HumaneSociety
         internal static IQueryable<Animal> SearchForAnimalsByMultipleTraits(Dictionary<int, string> updates) // parameter(s)?
         {
 
+            //Animal animal = new Animal();
 
-            throw new NotImplementedException();
+            var results = db.Animals.ToList();
+            
+            foreach (KeyValuePair<int, string> entry in updates) 
+            {
+                switch(entry.Key)
+                {
+                    case 1:
+                        db.Animals.Where(a => a.Category == a.Category).FirstOrDefault();
+                        break;
+                    case 2:
+                        db.Animals.Where(a => a.Name == a.Name).FirstOrDefault();
+                        break;
+                    case 3:
+                        db.Animals.Where(a => a.Age == a.Age).FirstOrDefault();
+                        break;
+                    case 4:
+                        db.Animals.Where(a => a.Demeanor == a.Demeanor).FirstOrDefault();
+                        break;
+                    case 5:
+                        db.Animals.Where(a => a.KidFriendly == a.KidFriendly).FirstOrDefault();
+                        break;
+                    case 6:
+                        db.Animals.Where(a => a.PetFriendly == a.PetFriendly).FirstOrDefault();
+                        break;
+                    case 7:
+                        db.Animals.Where(a => a.Weight == a.Weight).FirstOrDefault();
+                        break;
+                    case 8:
+                        db.Animals.Where(a => a.AnimalId == a.AnimalId).FirstOrDefault();
+                        break;
+                    case 9:
+                        Console.WriteLine("Finished");
+                        break;
+                    default:
+                        Console.WriteLine("please input your choice");
+                        break;
+                }
+                Console.ReadLine();
 
-
+            }
+            return db.Animals;  
+            
+            
         }
 
         // TODO: Misc Animal Things
@@ -343,29 +384,30 @@ namespace HumaneSociety
 
         internal static void UpdateShot(string shotName, Animal animal)
         {
-            
-            var shotfromdb = db.Shots.Where(s => s.Name == shotName).FirstOrDefault(); 
 
-            
-             db.Shots.Where(s => s.AnimalShots == null);
-            foreach (AnimalShot entry in animal.AnimalShots) 
+
+            var shotfromdb = db.Shots.Where(s => s.Name == shotName).FirstOrDefault();
+            Shot shot;
+            if (shotfromdb == null)
             {
-                switch (animal.AnimalId) 
-                {
-                   
+                shot = new Shot();
+                shot.Name = shotName;
+                db.Shots.InsertOnSubmit(shot);
+                db.SubmitChanges();
+            }
+            else
+            {
+                shot = shotfromdb;
 
-                        
-                
-                }
-            
+                AnimalShot animalshot = new AnimalShot();
+                animalshot.DateReceived = DateTime.Now;
+                animalshot.AnimalId = animal.AnimalId;
+                animalshot.ShotId = shot.ShotId;
+                db.AnimalShots.InsertOnSubmit(animalshot);
+                db.SubmitChanges();
             }
 
-            db.SubmitChanges();
-          
         }
-
-
-
 
     }
 }
